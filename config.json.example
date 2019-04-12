@@ -1,3 +1,7 @@
 {
-    "tokens": ["azerty"]
+    "port": 3000,
+    "auth": {
+        "user1": "azerty"
+    },
+    "storagePath": "./storage"
 }
