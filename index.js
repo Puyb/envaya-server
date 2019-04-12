@@ -7,6 +7,7 @@ const path = require('path')
 const fs = require('fs')
 const crypto = require('crypto')
 const graphite = require('graphite')
+const shelljs = require('shelljs');
 const config = require('./config')
 
 const client = graphite.createClient(config.graphiteUrl)
@@ -125,6 +126,7 @@ app.post('/send/', (req, res) => {
 
 let supervisionTestTimeout
 let supervisionTestStatus = true
+
 app.post('/alert/', (req, res) => {
   console.log('POST /alert/')
   if (deny(req, res)) return
@@ -163,6 +165,11 @@ app.post('/alert/', (req, res) => {
     ${imageUrl || lastImage || ''}`
       }]
     })
+  }
+  
+  if (req.query.medium === 'signal') {
+      const { message: { to, message } } = events.pop();
+      shelljs(`dbus-send --system --type=method_call --print-reply --dest="org.asamk.Signal" /org/asamk/Signal org.asamk.Signal.sendMessage string:"${message} " array:string: string:${to}`);
   }
   res.send('')
 })
