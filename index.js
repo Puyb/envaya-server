@@ -167,9 +167,9 @@ app.post('/alert/', (req, res) => {
     })
   }
   
-  if (req.query.medium === 'signal') {
-      const { message: { to, message } } = events.pop();
-      shelljs(`dbus-send --system --type=method_call --print-reply --dest="org.asamk.Signal" /org/asamk/Signal org.asamk.Signal.sendMessage string:"${message} " array:string: string:${to}`);
+  if (req.query.medium === 'signal' && events.length) {
+      const { messages: [{ to, message }] } = events.pop();
+      shelljs.exec(`dbus-send --system --type=method_call --print-reply --dest="org.asamk.Signal" /org/asamk/Signal org.asamk.Signal.sendMessage string:"${message} " array:string: string:${to}`);
   }
   res.send('')
 })
