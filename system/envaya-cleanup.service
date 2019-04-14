@@ -1,1 +1,8 @@
+[Unit]
+Description=Delete envaya-storage
 
+[Service]
+Type=oneshot
+ExecStart=find /srv/envaya-server/storage/ -mtime +2 -type f  -delete
+User=root
+Group=systemd-journal

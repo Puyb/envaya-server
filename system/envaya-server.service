@@ -1,1 +1,11 @@
+[Unit]
+Description=Envaya Server
+After=network.target
 
+[Service]
+User=puyb
+ExecStart=/usr/bin/node /srv/envaya-server/index.js
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
